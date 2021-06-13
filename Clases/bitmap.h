@@ -9,7 +9,7 @@ using namespace std;
 
 class bitmap{
     public:
-        bitset<100> M[100];
+        bitset<3> M[3];
         void print();
         int count(); // cuenta los 1
     //definiendo and de conjuntos
@@ -20,6 +20,7 @@ class bitmap{
         friend bool operator ==(bitmap c1,bitmap c2);// compara si son iguales
 };
 
+
 bitmap operator &(bitmap c1, bitmap c2){
     bitmap c3;
         for(int i=0;i<7;i++)
@@ -29,9 +30,9 @@ bitmap operator &(bitmap c1, bitmap c2){
 
     void bitmap::print(){
         int i,j;
-        for(i=0;i<7;i++){
+        for(i=0;i<3;i++){
             cout<<endl;
-            for(j=6;j>=0;j--)
+            for(j=2;j>=0;j--)
                 cout<<this->M[i][j]<<"  ";
         }
         cout<<endl;
