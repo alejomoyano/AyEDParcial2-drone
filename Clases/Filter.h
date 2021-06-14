@@ -57,10 +57,17 @@ void Filter::filtrado(int **campo){
     while(fila<19){ //es 99
         //inicio el bitmap aux de vuelta en cada fila nueva
         int p=2; //limite inverso del bitset
-        for (int j = 0; j < 3; j++) { //ver diagrama de matriz en excel
-            aux.M[fila-1][p]=campo[fila-1][j];
-            p--;
+        for(int i = fila-1; i<=fila+1; i++ ){
+            for (int j = 0; j < 3; j++) { //ver diagrama de matriz en excel
+                int s = campo[i][j];
+                if(s==2) {
+                    s = 1;
+                };
+                aux.M[fila-1][p]=s;
+                p--;
+            }
         }
+
         while (columna<19){ // es 99
             if(comparar(aux)){
                 //creo un vertice con las coordenadas de campo en donde aux se está fijando

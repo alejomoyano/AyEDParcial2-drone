@@ -36,10 +36,11 @@ int main() {
         cout<<endl;
         j++;
     }
+
     myFile.close();
 
     //la matriz queda vacía y no se pasa como parámetro a las otras funciones
-    //filtro.filtrado(pic);
+    filtro.filtrado(pic);
     //filtro.filtrado_x(pic);
 
 
