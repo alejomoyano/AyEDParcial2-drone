@@ -3,6 +3,7 @@
 #include <bitset>
 #include "Clases/Filter.h"
 #include "Clases/bitmap.h"
+#include "Clases/Vertice.h"
 
 using namespace std;
 
@@ -10,14 +11,10 @@ int main() {
     int j=0;
     string str;
     string line;
-
-//    bitmap mapa;
-//    Filter filtro=Filter(mapa);
-     Filter filtro;
-
-    int** pic = new int*[100];
-    for (int i = 0; i < 100; ++i)
-        pic[i] = new int[100];
+    Filter filtro;
+    int** pic = new int*[20]; //iría 100
+    for (int i = 0; i < 20; ++i)//iría 100
+        pic[i] = new int[20];//iría 100
 
     ifstream myFile("Pic.txt"); //Archivo con la foto
 
@@ -26,7 +23,7 @@ int main() {
 
         for (int i = 0; i < line.length(); ++i) { //generamos la matriz
             char pixel = line.at(i);
-            if(pixel=='x' || pixel=='X') {//respresentamos las X con 2
+            if(pixel=='x' || pixel=='X') {//representamos las X con 2
                 pic[i][j] = 2;
                 cout<<pic[i][j];
             }
@@ -39,7 +36,12 @@ int main() {
         cout<<endl;
         j++;
     }
-
     myFile.close();
+
+    //la matriz queda vacía y no se pasa como parámetro a las otras funciones
+    //filtro.filtrado(pic);
+    //filtro.filtrado_x(pic);
+
+
     return 0;
 }
