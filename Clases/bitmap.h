@@ -53,7 +53,7 @@ bitmap operator |(bitmap c1, bitmap c2){
     }
 
 bitmap operator <<(bitmap c1, int n){
-        for(int i=0;i<7;i++)
+        for(int i=0;i<3;i++)
             c1.M[i]<<=n;
         return c1;
     }

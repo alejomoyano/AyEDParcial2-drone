@@ -51,22 +51,38 @@ void Filter::filtrado(int **campo){
     //el otro bitmap lleno de 1s ya es parámetro de la clase, "filtro"
     bitmap aux;
 
+    for(int i=0;i<20;i++){
+        cout<<endl;
+        for(int j=0;j<20;j++)
+            cout<<campo[j][i]<<"  ";
+    }
+
     int fila=1;
     int columna=1;
 
     while(fila<19){ //es 99
         //inicio el bitmap aux de vuelta en cada fila nueva
-        int p=2; //limite inverso del bitset
-        for(int i = fila-1; i<=fila+1; i++ ){
+        cout<<"\n----------------\n";
+        int k=0;
+        for(int i = fila-1; i<=fila+1; i++ ){//FUNCIONA ASHEI
+            bitset<3> baux;
+            int p=2; //limite inverso del bitset
             for (int j = 0; j < 3; j++) { //ver diagrama de matriz en excel
-                int s = campo[i][j];
-                if(s==2) {
-                    s = 1;
-                };
-                aux.M[fila-1][p]=s;
+                int s = campo[j][i];
+                if(s==2)
+                    s = 0;
+                if(s==1)
+                    baux.set(p);
                 p--;
             }
+            aux.M[k]=baux;
+            k++;
         }
+//        for(int i=0;i<3;i++){
+//            cout<<endl;
+//            for(int j=2;j>=0;j++)
+//                cout<<aux.M[i][j]<<"  ";
+//        }
 
         while (columna<19){ // es 99
             if(comparar(aux)){
@@ -77,16 +93,32 @@ void Filter::filtrado(int **campo){
                 //paso a 0 esa parte de campo, solamente si coincide que son todos 1
                 for (int i = fila-1; i <= fila + 1; i++) {  //empiezo desde la fila anterior y paro en la siguiente
                     for (int j = columna-1; j <= columna +1 ; j++) { //empiezo desde la fila anterior y paro en la siguiente
-                        campo[i][j]=0;
+                        campo[j][i]=0;
                     }
+                }
+                for (int i = 0; i < aux.M->size(); ++i) {
+                    aux.M[i].flip();
+                }
+
+                cout<<"Cambiamos a 0 el 3x3\n";
+                for(int i=0;i<20;i++){
+                    cout<<endl;
+                    for(int j=0;j<20;j++)
+                        cout<<campo[j][i]<<"  ";
                 }
             }
             aux=aux<<1; //corremos 1 pos a la izq dejando la 3ra columna en 0
+            aux.print();
             if((columna+2)<=19){ //es 99
                 for(int k=fila-1;k<=fila+1;k++) {
-                    aux.M[k][0]=campo[0][columna+2];
+                    int s = campo[columna+2][k];
+                    if(s==2)
+                        s = 0;
+                    if(s==1)
+                        aux.M[k].set(0);
                 }
             }
+            aux.print();
             columna++;
         }
         columna = 1; //resetea de vuelta a columna 1 para ubicar correctamente el aux en 3*3
@@ -97,7 +129,7 @@ void Filter::filtrado(int **campo){
     for(int i=0;i<20;i++){
         cout<<endl;
         for(int j=0;j<20;j++)
-            cout<<campo[i][j]<<"  ";
+            cout<<campo[j][i]<<"  ";
     }
 }
 
