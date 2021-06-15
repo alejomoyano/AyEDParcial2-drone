@@ -49,19 +49,7 @@ int main() {
 
     campo.grafos(vertices, barreras);
     campo.set_grafo();
-/*
-    Vertice a1 = Vertice(1,1);
-    Vertice a2 = Vertice(6,16);
-    Vertice b1 = Vertice(5,11);
-    Vertice b2 = Vertice(8,11);
-
-    Arista a = Arista(a1,a2);
-    Arista b = Arista(b1,b2);
-
-    cout<<a.intersecta(b)<<endl;
-*/
-
-
+    campo.busquedaAmplitud();
 
     return 0;
 }

@@ -12,6 +12,7 @@ class Vertice{
 private:
     int x;
     int y;
+    bool mark;
 
 public:
     Vertice();
@@ -19,10 +20,12 @@ public:
 
     int get_x();
     int get_y();
+    bool isMarked();
 
     void set_x(int aux);
     void set_y(int aux);
     void set_xy(int,int);
+    void setMark();
 
     float calc_dist(Vertice aux);
     bool igual (Vertice aux);
@@ -33,11 +36,13 @@ public:
 Vertice::Vertice() {
     x = 0;
     y = 0;
+    mark=0;
 }
 
 Vertice::Vertice(int x, int y) {
     this->x = x;
     this->y = y;
+    mark=0;
 }
 
 int Vertice::get_x() {
@@ -83,6 +88,14 @@ bool Vertice::igual(Vertice aux) {
     }else{
         return false;
     }
+}
+
+bool Vertice::isMarked() {
+    return mark;
+}
+
+void Vertice::setMark() {
+    mark=1;
 }
 
 
