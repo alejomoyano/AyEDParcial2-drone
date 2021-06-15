@@ -28,12 +28,12 @@ int main() {
             char pixel = line.at(i);
             if(pixel=='x' || pixel=='X') {//representamos las X con 2
                 pic[i][j] = 2;
-                cout<<pic[i][j];
+                cout<<pic[i][j]<<" ";
             }
             else{
                 int casted = (int)pixel-48;
                 pic[i][j]= casted;
-                cout<<pic[i][j];
+                cout<<pic[i][j]<<" ";
             }
         }
         cout<<endl;

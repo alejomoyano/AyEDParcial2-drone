@@ -21,15 +21,12 @@ public:
     vector<Arista> barreras;
     vector<Vertice> vertices;
 
-
     void grafos (vector<Vertice>*, vector<Arista>*b);
     void set_grafo();
-
-
 };
 
 void Grafo::grafos(vector<Vertice>* a, vector<Arista>*b) {
-    //copio el contenido de los nodos y agrego la salida del drone
+    //copio el contenido de los nodos y agrego el punto de salida del drone
     Vertice inicio_drone = Vertice(1,1);
     vertices.push_back(inicio_drone);
     for (int k = 0; k < a->size(); ++k) {
@@ -44,13 +41,14 @@ void Grafo::grafos(vector<Vertice>* a, vector<Arista>*b) {
     }
 
     //inicializo grafo con los pesos en 0
-    int size = int(a->size());
+    int size = vertices.size();
+    vector<float> aux;
     for (int i = 0; i < size; ++i) {
-        vector<float> aux;
         for (int j = 0; j < size; ++j) {
             aux.push_back(0);
         }
         grafo.push_back(aux);
+        aux.clear();
     }
 }
 
@@ -61,11 +59,10 @@ void Grafo::set_grafo() {
     for (int i = 0; i < size; ++i) {
         for (int j = 0; j < size; ++j) {
 
-            if(grafo.at(i).at(j)==0){ //evito la comparación si el nodo tiene INFI o algún valor
+            if(grafo[i][j]==0){ //evito la comparación si el nodo tiene INFI o algún valor
                 if(i==j){ //consigo mismo, es infinita la distancia porque no tenemos nodos autoreferenciados
                     grafo.at(i).at(j) = INFI;
                 }else{
-
 
                     Arista posible = Arista(vertices.at(i),vertices.at(j)); //considero la posible arista
                     int flag = 0; //me avisa si se cruzó con alguna de las barreras
@@ -74,7 +71,6 @@ void Grafo::set_grafo() {
                             flag=1;
                         }
                     }
-
                     if(flag==0){ //si no hubo intersección, pongo en la relacion correspondiente el peso de la arista
                         grafo.at(i).at(j) = posible.get_dist();
                     }

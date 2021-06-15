@@ -20,6 +20,7 @@ public:
 
     void filtrado(int**);
     void filtrado_x(int**);
+    void printMatriz(int**);
 
     vector<Vertice> vertices; //va almacenando los nodos que encuentra durante el filtrado
     vector<Arista>  barreras;
@@ -50,19 +51,10 @@ bool Filter::comparar(bitmap aux){ //funciona joya
 void Filter::filtrado(int **campo){
     //el otro bitmap lleno de 1s ya es parámetro de la clase, "filtro"
     bitmap aux;
-
-    for(int i=0;i<20;i++){
-        cout<<endl;
-        for(int j=0;j<20;j++)
-            cout<<campo[j][i]<<"  ";
-    }
-
-    int fila=1;
-    int columna=1;
+    int fila=1, columna=1;
 
     while(fila<19){ //es 99
         //inicio el bitmap aux de vuelta en cada fila nueva
-        cout<<"\n----------------\n";
         int k=0;
         for(int i = fila-1; i<=fila+1; i++ ){//FUNCIONA ASHEI
             bitset<3> baux;
@@ -78,11 +70,6 @@ void Filter::filtrado(int **campo){
             aux.M[k]=baux;
             k++;
         }
-//        for(int i=0;i<3;i++){
-//            cout<<endl;
-//            for(int j=2;j>=0;j++)
-//                cout<<aux.M[i][j]<<"  ";
-//        }
 
         while (columna<19){ // es 99
             if(comparar(aux)){
@@ -99,16 +86,9 @@ void Filter::filtrado(int **campo){
                 for (int i = 0; i < aux.M->size(); ++i) {
                     aux.M[i].flip();
                 }
-
-                cout<<"Cambiamos a 0 el 3x3\n";
-                for(int i=0;i<20;i++){
-                    cout<<endl;
-                    for(int j=0;j<20;j++)
-                        cout<<campo[j][i]<<"  ";
-                }
+                cout<<"Encontramos una mancha en ("<<fila<<","<<columna<<") Cambiamos a 0 el 3x3 en el campo y en el aux\n";
             }
             aux=aux<<1; //corremos 1 pos a la izq dejando la 3ra columna en 0
-            aux.print();
             int f=0;
             if((columna+2)<=19){ //es 99
                 for(int k=fila-1;k<=fila+1;k++) {
@@ -120,19 +100,13 @@ void Filter::filtrado(int **campo){
                     f++;
                 }
             }
-            aux.print();
             columna++;
         }
         columna = 1; //resetea de vuelta a columna 1 para ubicar correctamente el aux en 3*3
         fila++;
     }
-    //print campo
-    cout<<"Matriz luego de filtrado"<<endl;
-    for(int i=0;i<20;i++){
-        cout<<endl;
-        for(int j=0;j<20;j++)
-            cout<<campo[j][i]<<"  ";
-    }
+    cout<<"\nMatriz luego de filtrado de manchas"<<endl;
+    printMatriz(campo);
 }
 
 void Filter::filtrado_x(int **campo) {//barrido de la matriz para ver las x. Es una verguenza
@@ -180,23 +154,29 @@ void Filter::filtrado_x(int **campo) {//barrido de la matriz para ver las x. Es 
                         }
                     }
 
-
-                    b.push_back(aux);
                 }
-                Vertice inicio = b.front();
-                Vertice final = b.back();
-                Arista barrera = Arista(inicio,final);
-                barreras.push_back(barrera);
+                if(b.size()>=4) {
+                    Vertice inicio = b.front();
+                    Vertice final = b.back();
+                    Arista barrera = Arista(inicio, final);
+                    barreras.push_back(barrera);
+                }
             }
 
         }
     }
-    cout<<"Matriz luego de filtrado"<<endl;
+    cout<<"\nMatriz luego de filtrado de barreras"<<endl;
+    printMatriz(campo);
+
+}
+
+void Filter::printMatriz(int **campo) {
     for(int i=0;i<20;i++){
         cout<<endl;
         for(int j=0;j<20;j++)
-            cout<<campo[i][j]<<"  ";
+            cout<<campo[j][i]<<" ";
     }
+    cout<<endl;
 }
 
 
