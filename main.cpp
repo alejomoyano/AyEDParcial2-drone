@@ -19,7 +19,7 @@ int main() {
     for (int i = 0; i < 20; ++i)//iría 100
         pic[i] = new int[20];//iría 100
 
-    ifstream myFile("Pic.txt"); //Archivo con la foto
+    ifstream myFile(R"(D:\Documentos\ALGORITMOS 2021\TERCER PARCIAL 2021\AyEDParcial2-drone\pic.txt)"); //Archivo con la foto
 
     // Mientras siga habiendo una linea por procesar
     while (getline(myFile, line)) {
