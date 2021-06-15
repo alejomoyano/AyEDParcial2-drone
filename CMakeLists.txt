@@ -3,4 +3,4 @@ project(Parcial_3)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(Parcial_3 main.cpp Clases/Arista.h Clases/Vertice.h)
+add_executable(Parcial_3 main.cpp Clases/Arista.h Clases/Vertice.h Clases/Grafo.h)

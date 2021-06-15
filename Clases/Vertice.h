@@ -22,8 +22,10 @@ public:
 
     void set_x(int aux);
     void set_y(int aux);
+    void set_xy(int,int);
 
-    int calc_dist(Vertice aux);
+    float calc_dist(Vertice aux);
+    bool igual (Vertice aux);
 
 
 };
@@ -54,15 +56,33 @@ void Vertice::set_y(int aux) {
     y = aux;
 }
 
-int Vertice::calc_dist(Vertice aux) {
+float Vertice::calc_dist(Vertice aux) {
     int x1 = x;
     int y1 = y;
     int x2 = aux.get_x();
     int y2 = aux.get_y();
 
-    float distancia = sqrt(abs(pow(x2-x1,2) + pow(y2-y1,2)));
+    float distancia = roundf(sqrt(abs(pow(x2-x1,2) + pow(y2-y1,2)))*100)/100;
 
-    return round(distancia); //supuestamente no se permitian decimales, los pesos tenian que ser enteros
+    return distancia; //supuestamente no se permitian decimales, los pesos tenian que ser enteros
+}
+
+void Vertice::set_xy(int, int) {
+    set_x(x);
+    set_y(y);
+}
+
+bool Vertice::igual(Vertice aux) {
+    int x1 = x;
+    int y1 = y;
+    int x2 = aux.get_x();
+    int y2 = aux.get_y();
+
+    if(x1 == x2 && y1 == y2){
+        return true;
+    }else{
+        return false;
+    }
 }
 
 
