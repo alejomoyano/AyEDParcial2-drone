@@ -7,12 +7,20 @@
 #include "Arista.h"
 #include "Vertice.h"
 #include "bitmap.h"
+#include "Pila.h"
 
 using namespace std;
+
+struct coordenada {
+    int x,y;
+    char type;
+};
 
 class Filter{
 public:
     bitmap filtro;
+    vector<Vertice> vertices; //va almacenando los nodos que encuentra durante el filtrado
+    vector<Arista>  barreras;
 
     Filter();
 
@@ -20,10 +28,10 @@ public:
 
     void filtrado(int**);
     void filtrado_x(int**);
+    Vertice encontrarPosiciones(bool, int, int, int **);
     void printMatriz(int**);
 
-    vector<Vertice> vertices; //va almacenando los nodos que encuentra durante el filtrado
-    vector<Arista>  barreras;
+
 };
 
 Filter::Filter(){
@@ -44,8 +52,6 @@ bool Filter::comparar(bitmap aux){ //funciona joya
     }
     return flag;
 }
-
-
 
 
 void Filter::filtrado(int **campo){
