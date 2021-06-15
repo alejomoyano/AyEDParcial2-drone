@@ -41,7 +41,7 @@ int main() {
 
     //la matriz queda vacía y no se pasa como parámetro a las otras funciones
     filtro.filtrado(pic);
-    //filtro.filtrado_x(pic);
+    filtro.filtrado_x(pic);
 
 
     return 0;

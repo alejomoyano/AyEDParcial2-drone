@@ -22,6 +22,7 @@ public:
 
     void set_x(int aux);
     void set_y(int aux);
+    void set_xy(int,int);
 
     int calc_dist(Vertice aux);
 
@@ -63,6 +64,11 @@ int Vertice::calc_dist(Vertice aux) {
     float distancia = sqrt(abs(pow(x2-x1,2) + pow(y2-y1,2)));
 
     return round(distancia); //supuestamente no se permitian decimales, los pesos tenian que ser enteros
+}
+
+void Vertice::set_xy(int x,int y){
+    set_x(x);
+    set_y(y);
 }
 
 
