@@ -34,14 +34,19 @@ public:
 
 };
 
+
 Filter::Filter(){
     for (int i = 0; i < filtro.M->size(); ++i) {
-        filtro.M[i].flip();
+        filtro.M[i].flip();//inicializamos el filtro con 1s
     }
-    //filtro.print(); era para ver si
 
 }
 
+/*
+ * Metodo que compara (and) el filtro con otro bitmap
+ * @param aux bitmap a comparar
+ * @return true si es igual, false si no lo es
+ */
 bool Filter::comparar(bitmap aux){ //funciona joya
     bool flag=true;
     bitset<3> equal;
@@ -53,7 +58,10 @@ bool Filter::comparar(bitmap aux){ //funciona joya
     return flag;
 }
 
-
+/*
+ * Metodo que realiza el filtrado de conjutnos de 3x3 de 1s
+ * @param campo: matriz de enteros que representa la imagen del campo
+ */
 void Filter::filtrado(int **campo){
     //el otro bitmap lleno de 1s ya es parámetro de la clase, "filtro"
     bitmap aux;
@@ -115,14 +123,20 @@ void Filter::filtrado(int **campo){
     printMatriz(campo);
 }
 
+
+/*
+ * Metodo que filtra las x de la matriz campo
+ * @param campo: matriz de enteros que representa la imagen del campo
+ */
 void Filter::filtrado_x(int **campo) {//barrido de la matriz para ver las x. Es una verguenza
-    int size;
+    int size=0;
     vector<coordenada> posiciones;
 
     for (int i = 0; i < 20; ++i) { //es 100
         for (int j = 0; j < 20; ++j) { //es 100
             if(campo[j][i] == 2 && posiciones.empty()){
                 Vertice inicio, final;
+                inicio.set_xy(j,i);
                 campo[j][i] = 0;
                 if(campo[j+1][i]){
                     final = encontrarPosiciones(true,j,i,campo); //true para indicar que se mueva por el eje x
@@ -132,8 +146,7 @@ void Filter::filtrado_x(int **campo) {//barrido de la matriz para ver las x. Es 
                     final = encontrarPosiciones(false, j, i, campo); //false para indicar que se mueva por el eje y
                     size = final.get_y()-inicio.get_y();//calculamos la cantidad de x que encontramos
                 }
-                if(size>3){//deben ser 4 o mas x para considerarla barrera
-                    inicio.set_xy(j,i);
+                if(size>=3){//deben ser 4 o mas x para considerarla barrera
                     j=final.get_x();
                     i=final.get_y();
                     Arista barrera = Arista(inicio,final);
@@ -147,7 +160,14 @@ void Filter::filtrado_x(int **campo) {//barrido de la matriz para ver las x. Es 
     cout<<"\n----------------------------------\n";
 }
 
-
+/*
+ * Metodo auxiliar para el filtrado de las x. Encuentra en que direccion estan las x que quedan
+ * @param side: true si avanzamos hacia la derecha, false si lo hacemos para abajo
+ * @param j: indica la columna de la 1ra x
+ * @param i: indica la fila de la 1ra x
+ * @param campo: matriz de enteros que representa la imagen del campo
+ * @return Vertice con las coordenadas de la ultima x encontrada en esa barrera
+ */
 Vertice Filter::encontrarPosiciones(bool side, int j, int i,int **campo){
     Vertice final;
     bool flag=true;
@@ -182,6 +202,10 @@ Vertice Filter::encontrarPosiciones(bool side, int j, int i,int **campo){
     return final;
 }
 
+/*
+ * Metodo para imprimir la matriz campo
+ * @param campo: matriz de enteros que representa la imagen del campo
+ */
 void Filter::printMatriz(int **campo) {
     for(int i=0;i<20;i++){
         cout<<endl;

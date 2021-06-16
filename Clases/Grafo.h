@@ -15,6 +15,9 @@
 
 using namespace std;
 
+
+
+
 class Grafo{
 public:
     vector<vector<float>> grafo;
@@ -25,9 +28,14 @@ public:
 
     void grafos (vector<Vertice>*, vector<Arista>*b);
     void set_grafo();
-    void busquedaAmplitud();
+//    void busquedaAmplitud();
+    void busqueda();
 };
-
+/*
+ * Metodo que setea los campos de la calse
+ * @param a: vector con los vertices
+ * @param b: vector con las aristas
+ */
 void Grafo::grafos(vector<Vertice>* a, vector<Arista>*b) {
     //copio el contenido de los nodos y agrego el punto de salida del drone
     Vertice inicio_drone = Vertice(1,1);
@@ -55,6 +63,9 @@ void Grafo::grafos(vector<Vertice>* a, vector<Arista>*b) {
     }
 }
 
+/*
+ * Metodo que setea la matriz de adyacencia
+ */
 void Grafo::set_grafo() {
     int size= vertices.size();
     int bar = barreras.size();
@@ -101,35 +112,93 @@ void Grafo::set_grafo() {
     cout<<"------------------------------------------------------------------------------------------------"<<endl;
 }
 
-void Grafo::busquedaAmplitud() {
-    Cola<Vertice> q; //va a guardar los vertices que entren en el ciclo(siempre los q estan a menor distancia entre ellos)
-    vertices.front().setMark();
-    q.encolar(vertices.front());
-    cicloH.push_back(vertices.front()); //en este vector queda armado el menor ciclo Hamiltoneano
-    int k=0, f=0;
-    while(!q.esVacia()) {
-        for (int i = 0; i < vertices.size(); i++) { //esto es para saber que indice poner en la busqueda en la matriz
-            if (q.verFrente().igual(vertices[i])) {
-                f = i;
-            }
-        }
-        for (int g = 1; g < vertices.size(); g++) { //busco el menor de la fila(q no sea 0)
-            if (grafo[f][g]!=0 && grafo[f][g]!=INFI && !vertices[g].isMarked()) {
-                if (grafo[f][g] < grafo[f][k]) k = g;
 
-            }
-        }
-        if(!vertices[k].isMarked()) {
-            vertices[k].setMark(); //k va a ser el indice del vertice a menor distancia del primer vertice
-            q.encolar(vertices[k]);
-            cicloH.push_back(vertices.at(k));
-            distancia = distancia + grafo.at(f).at(k); //distancia que recorre el menor cicloH
-        }
-        q.desencolar();
+/*
+ * Metodo donde se aplica la busqueda de amplitud
+ */
+//void Grafo::busquedaAmplitud() {
+//    Cola<Vertice> q; //va a guardar los vertices que entren en el ciclo(siempre los q estan a menor distancia entre ellos)
+//    vertices.front().setMark(); // el primero es el 1,1. Se empieza por ese siempre
+//    q.encolar(vertices.front());
+//    cicloH.push_back(vertices.front()); //en este vector queda armado el menor ciclo Hamiltoneano
+//    int k=0, f=0;
+//    while(!q.esVacia()) {
+//        for (int i = 0; i < vertices.size(); i++) { //esto es para saber que indice poner en la busqueda en la matriz
+//            if (q.verFrente().igual(vertices[i])) {
+//                f = i;
+//            }
+//        }
+//        for (int g = 1; g < vertices.size(); g++) { //busco el menor de la fila(q no sea 0)
+//            if (grafo[f][g]!=0 && grafo[f][g]!=INFI && !vertices[g].isMarked()) {
+//                if (grafo[f][g] < grafo[f][k]) k = g;
+//
+//            }
+//        }
+//        if(!vertices[k].isMarked()) {
+//            vertices[k].setMark(); //k va a ser el indice del vertice a menor distancia del primer vertice
+//            q.encolar(vertices[k]);
+//            cicloH.push_back(vertices.at(k));
+//            distancia = distancia + grafo.at(f).at(k); //distancia que recorre el menor cicloH
+//        }
+//        q.desencolar();
+//
+//    }
+//
+//}
 
+struct camino{
+    vector<int> c; //contiene los indices de los verices recorridos
+    vector<bool> recorridos; //true si ya vio ese verice
+    double peso; //peso del camino
+};
+
+void Grafo::busqueda() {
+
+
+    int counter=0;
+    //Se va generando una cola con un recorrido por nivel del Arbol, iniciando por la raíz
+    Cola<camino> aux;
+    //primer nodo
+    camino inicio, ideal;
+    ideal.peso=1000;
+
+    for (int i = 0; i < vertices.size(); ++i) {//inicializamos el vector en 0
+        inicio.recorridos.push_back(false);
     }
 
-}
+    inicio.c.push_back(0);
+    inicio.recorridos[0]=true;
+    aux.encolar(inicio);
+    int f=0;
+
+    while (!(aux.esVacia())){
+
+        camino i_camino = aux.desencolar();
+
+        for (int g = 1; g < vertices.size(); g++) {
+            if (grafo[f][g]!=0 && grafo[f][g]!=INFI && i_camino.recorridos[g]!=1) {
+                camino caux = i_camino;
+                caux.c.push_back(g);
+                caux.recorridos[g]=true;
+                caux.peso += grafo[f][g];
+
+                if(caux.c.size()==vertices.size()){
+                    if(grafo[g][0]!=0 && grafo[g][0]!=INFI){
+                        counter++;
+                        if(ideal.peso>caux.peso)
+                            ideal=caux;
+                    }
+                }
+                else{
+                    aux.encolar(caux);
+                }
+            }
+        }
+    }
+        printf("El ciclo Hamiltoniano mas corto detectado tiene un peso de: %f.\n Cantidad de caminos encontrados: %i",ideal.peso,counter);
+    }
+
+
 
 
 #endif //PARCIAL_3_GRAFO_H
