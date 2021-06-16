@@ -20,7 +20,7 @@ public:
     vector<vector<float>> grafo;
     vector<Arista> barreras;
     vector<Vertice> vertices;
-    vector<Vertice> cicloH;
+    Cola<Vertice> cicloH;
     float distancia=0;
 
     void grafos (vector<Vertice>*, vector<Arista>*b);
@@ -105,7 +105,7 @@ void Grafo::busquedaAmplitud() {
     Cola<Vertice> q; //va a guardar los vertices que entren en el ciclo(siempre los q estan a menor distancia entre ellos)
     vertices.front().setMark();
     q.encolar(vertices.front());
-    cicloH.push_back(vertices.front()); //en este vector queda armado el menor ciclo Hamiltoneano
+    cicloH.encolar(vertices.front()); //en este vector queda armado el menor ciclo Hamiltoneano
     int k=0, f=0;
     while(!q.esVacia()) {
         for (int i = 0; i < vertices.size(); i++) { //esto es para saber que indice poner en la busqueda en la matriz
@@ -116,16 +116,15 @@ void Grafo::busquedaAmplitud() {
         for (int g = 1; g < vertices.size(); g++) { //busco el menor de la fila(q no sea 0)
             if (grafo[f][g]!=0 && grafo[f][g]!=INFI && !vertices[g].isMarked()) {
                 if (grafo[f][g] < grafo[f][k]) k = g;
-
             }
         }
         if(!vertices[k].isMarked()) {
             vertices[k].setMark(); //k va a ser el indice del vertice a menor distancia del primer vertice
             q.encolar(vertices[k]);
-            cicloH.push_back(vertices.at(k));
-            distancia = distancia + grafo.at(f).at(k); //distancia que recorre el menor cicloH
+            cicloH.encolar(vertices[k]);
+//            distancia = distancia + grafo.at(f).at(k); //distancia que recorre el menor cicloH
         }
-        q.desencolar();
+       q.desencolar();
 
     }
 
