@@ -11,7 +11,7 @@
 #include <iomanip>
 #include <cmath>
 #include "Cola.h"
-#define INFI  999
+#define INFI  9999
 
 using namespace std;
 
@@ -114,7 +114,7 @@ void Grafo::busqueda() {
     Cola<camino> aux;
     //primer nodo
     camino inicio, ideal;
-    ideal.peso=1000;
+    ideal.peso=INFI;
 
     for (int i = 0; i < vertices.size(); ++i) {//inicializamos el vector en 0
         inicio.recorridos.push_back(false);

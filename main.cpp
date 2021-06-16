@@ -15,9 +15,9 @@ int main() {
     string line;
     Filter filtro;
     Grafo campo;
-    int** pic = new int*[20]; //iría 100
-    for (int i = 0; i < 20; ++i)//iría 100
-        pic[i] = new int[20];//iría 100
+    int** pic = new int*[100];
+    for (int i = 0; i < 100; ++i)
+        pic[i] = new int[100];
 
     ifstream myFile("Pic.txt"); //Archivo con la foto
 
