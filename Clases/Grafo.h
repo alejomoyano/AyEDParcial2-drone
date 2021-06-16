@@ -15,9 +15,6 @@
 
 using namespace std;
 
-
-
-
 class Grafo{
 public:
     vector<vector<float>> grafo;
@@ -147,34 +144,28 @@ void Grafo::set_grafo() {
 //}
 
 struct camino{
-    vector<int> c; //contiene los indices de los verices recorridos
-    vector<bool> recorridos; //true si ya vio ese verice
+    vector<int> c; //contiene los indices de los vertices recorridos
+    vector<bool> recorridos; //true si ya vio ese veritice
     double peso; //peso del camino
 };
 
 void Grafo::busqueda() {
-
-
     int counter=0;
-    //Se va generando una cola con un recorrido por nivel del Arbol, iniciando por la raíz
+    //Se va generando una cola con un recorrido por nivel de los vecinos del primer vertice
     Cola<camino> aux;
-    //primer nodo
     camino inicio, ideal;
     ideal.peso=1000;
-
-    for (int i = 0; i < vertices.size(); ++i) {//inicializamos el vector en 0
+    for (int i = 0; i < vertices.size(); ++i) {//inicializamos el vector en false
         inicio.recorridos.push_back(false);
     }
-
     inicio.c.push_back(0);
     inicio.recorridos[0]=true;
     aux.encolar(inicio);
-    int f=0;
-
+    int f=0; //indice de la fila de la matriz de adyacencias
     while (!(aux.esVacia())){
 
         camino i_camino = aux.desencolar();
-
+        f=i_camino.c[i_camino.c.size()-1]; //para que cambie el indice de la matriz, antes no cambiaba
         for (int g = 1; g < vertices.size(); g++) {
             if (grafo[f][g]!=0 && grafo[f][g]!=INFI && i_camino.recorridos[g]!=1) {
                 camino caux = i_camino;
@@ -196,7 +187,7 @@ void Grafo::busqueda() {
         }
     }
         printf("El ciclo Hamiltoniano mas corto detectado tiene un peso de: %f.\n Cantidad de caminos encontrados: %i",ideal.peso,counter);
-    }
+}
 
 
 

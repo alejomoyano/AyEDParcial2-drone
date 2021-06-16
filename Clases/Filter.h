@@ -84,7 +84,6 @@ void Filter::filtrado(int **campo){
             aux.M[k]=baux;
             k++;
         }
-
         while (columna<19){ // es 99
             if(comparar(aux)){
                 //creo un vertice con las coordenadas de campo en donde aux se está fijando
@@ -128,78 +127,65 @@ void Filter::filtrado(int **campo){
  * Metodo que filtra las x de la matriz campo
  * @param campo: matriz de enteros que representa la imagen del campo
  */
-void Filter::filtrado_x(int **campo) {//barrido de la matriz para ver las x. Es una verguenza
-    int size=0;
-    vector<coordenada> posiciones;
+void Filter::filtrado_x(int **campo) {//barrido de la matriz para ver las x
 
     for (int i = 0; i < 20; ++i) { //es 100
         for (int j = 0; j < 20; ++j) { //es 100
-            if(campo[j][i] == 2 && posiciones.empty()){
-                Vertice inicio, final;
-                inicio.set_xy(j,i);
-                campo[j][i] = 0;
-                if(campo[j+1][i]){
-                    final = encontrarPosiciones(true,j,i,campo); //true para indicar que se mueva por el eje x
-                    size = final.get_x()-inicio.get_x();//calculamos la cantidad de x que encontramos
+
+            if(campo[j][i] == 2){
+                vector<Vertice> b;
+                int k = j; //para moverme a partir de las coordenadas actuales sin tocar los for
+                int z = i; //para moverme a partir de las coordenadas actuales sin tocar los for
+                int flag = 1; //empieza en 1 para arrancar el while por primera vez. en el while se pone a 0 y si hay cambios,
+                //vuelve a 1,sino sale del while. es para casos límites donde se trabe con la k o la z.
+
+                while(campo[k][z]==2 && flag == 1){
+                    Vertice aux = Vertice(z,k);
+                    b.push_back(aux);
+                    flag = 0;
+                    campo[k][z] = 0; //lo borro acá para que en próximas vueltas no lo vuelva a tener en cuenta
+                    if(k!=0){ //caso de primer fila,no se puede ir una fila arriba
+                        if(campo[k-1][z]==2){
+                            k--;
+                            flag = 1;
+                        }
+                    };
+
+                    if(k!=19){ //caso de ultima fila,no se puede ir una fila más abajo. Es 99
+                        if(campo[k+1][z]==2){
+                            k++;
+                            flag = 1;
+                        }
+                    };
+
+                    if(z!=0){//caso límite de primer columna, no puede irse una columna a la izquierda
+                        if(campo[k][z-1]==2){
+                            z--;
+                            flag = 1;
+                        }
+                    };
+
+                    if(z!=19){ //Es 99. caso límite de ultima columna, no puede irse una columna a la derecha
+                        if(campo[k][z+1]==2){
+                            z++;
+                            flag = 1;
+                        }
+                    }
+
                 }
-                if(campo[j][i+1]) {
-                    final = encontrarPosiciones(false, j, i, campo); //false para indicar que se mueva por el eje y
-                    size = final.get_y()-inicio.get_y();//calculamos la cantidad de x que encontramos
-                }
-                if(size>=3){//deben ser 4 o mas x para considerarla barrera
-                    j=final.get_x();
-                    i=final.get_y();
-                    Arista barrera = Arista(inicio,final);
+                if(b.size()>=4) {
+                    Vertice inicio = b.front();
+                    Vertice final = b.back();
+                    Arista barrera = Arista(inicio, final);
                     barreras.push_back(barrera);
                 }
             }
+
         }
     }
     cout<<"\nMatriz luego de filtrado de barreras"<<endl;
     printMatriz(campo);
-    cout<<"\n----------------------------------\n";
-}
 
-/*
- * Metodo auxiliar para el filtrado de las x. Encuentra en que direccion estan las x que quedan
- * @param side: true si avanzamos hacia la derecha, false si lo hacemos para abajo
- * @param j: indica la columna de la 1ra x
- * @param i: indica la fila de la 1ra x
- * @param campo: matriz de enteros que representa la imagen del campo
- * @return Vertice con las coordenadas de la ultima x encontrada en esa barrera
- */
-Vertice Filter::encontrarPosiciones(bool side, int j, int i,int **campo){
-    Vertice final;
-    bool flag=true;
-    int posx,posy;
-    if(side){//nos movemos por el eje x
-        while(flag){
-            j++;
-            if(campo[j][i]==2 && j!=20){
-                campo[j][i]=0;
-                posx=j;
-                posy=i;
-            }
-            else
-                flag=false;
-        }
-    }
-    else{ // nos movemos por el eje y
-        while(flag){
-            i++;
-            if(campo[j][i]==2 && i!=20){
-                campo[j][i]=0;
-                posx=j;
-                posy=i;
-            }
-            else
-                flag=false;
-        }
-    }
-
-    final.set_xy(posx,posy);
-
-    return final;
 }
 
 /*
