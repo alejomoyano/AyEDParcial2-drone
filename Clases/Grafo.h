@@ -10,6 +10,7 @@
 #include <stdlib.h>
 #include <iomanip>
 #include <cmath>
+#include "Cola.h"
 #define INFI  999
 
 using namespace std;
@@ -23,6 +24,8 @@ public:
 
     void grafos (vector<Vertice>*, vector<Arista>*b);
     void set_grafo();
+
+    void busqueda();
 };
 
 void Grafo::grafos(vector<Vertice>* a, vector<Arista>*b) {
@@ -97,6 +100,56 @@ void Grafo::set_grafo() {
     }
     cout<<"------------------------------------------------------------------------------------------------"<<endl;
 }
+struct camino{
+    vector<int> c; //contiene los indices de los verices recorridos
+    vector<bool> recorridos; //true si ya vio ese verice
+    double peso; //peso del camino
+};
 
+void Grafo::busqueda() {
+
+
+    int counter=0;
+    //Se va generando una cola con un recorrido por nivel del Arbol, iniciando por la raíz
+    Cola<camino> aux;
+    //primer nodo
+    camino inicio, ideal;
+    ideal.peso=1000;
+
+    for (int i = 0; i < vertices.size(); ++i) {//inicializamos el vector en 0
+        inicio.recorridos.push_back(false);
+    }
+
+    inicio.c.push_back(0);
+    inicio.recorridos[0]=true;
+    aux.encolar(inicio);
+    int f=0;
+
+    while (!(aux.esVacia())){
+
+        camino i_camino = aux.desencolar();
+        f=i_camino.c[i_camino.c.size()-1];
+        for (int g = 1; g < vertices.size(); g++) {
+            if (grafo[f][g]!=0 && grafo[f][g]!=INFI && i_camino.recorridos[g]!=1) {
+                camino caux = i_camino;
+                caux.c.push_back(g);
+                caux.recorridos[g]=true;
+                caux.peso += grafo[f][g];
+
+                if(caux.c.size()==vertices.size()){
+                    if(grafo[g][0]!=0 && grafo[g][0]!=INFI){
+                        counter++;
+                        if(ideal.peso>caux.peso)
+                            ideal=caux;
+                    }
+                }
+                else{
+                    aux.encolar(caux);
+                }
+            }
+        }
+    }
+    printf("El ciclo Hamiltoniano mas corto detectado tiene un peso de: %f.\n Cantidad de caminos encontrados: %i",ideal.peso,counter);
+}
 
 #endif //PARCIAL_3_GRAFO_H

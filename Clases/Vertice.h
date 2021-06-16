@@ -67,7 +67,7 @@ float Vertice::calc_dist(Vertice aux) {
     return distancia; //supuestamente no se permitian decimales, los pesos tenian que ser enteros
 }
 
-void Vertice::set_xy(int, int) {
+void Vertice::set_xy(int x, int y) {
     set_x(x);
     set_y(y);
 }
