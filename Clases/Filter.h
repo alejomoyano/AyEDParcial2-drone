@@ -23,7 +23,7 @@ public:
     void printMatriz(int**);
 
     vector<Vertice> vertices; //va almacenando los nodos que encuentra durante el filtrado
-    vector<Arista>  barreras;
+    vector<Arista>  barreras; //almacena las barreras encontradas durante el filtrado
 };
 
 Filter::Filter(){
@@ -34,7 +34,12 @@ Filter::Filter(){
 
 }
 
-bool Filter::comparar(bitmap aux){ //funciona joya
+/*
+ * Metodo que realiza la operacion AND entre dos conjuntos
+ * @param aux: bitmap a comparar con respecto al filtro de 3x3
+ * @return true si son iguales, false si no lo son
+ */
+bool Filter::comparar(bitmap aux){
     bool flag=true;
     bitset<3> equal;
     for(int i=0;i<3;i++) {
@@ -47,21 +52,23 @@ bool Filter::comparar(bitmap aux){ //funciona joya
 
 
 
-
+/*
+ * Metodo que filtra las malezas
+ * @param campo: matriz del campo
+ */
 void Filter::filtrado(int **campo){
     //el otro bitmap lleno de 1s ya es parámetro de la clase, "filtro"
     bitmap aux;
     int fila=1, columna=1;
 
-    while(fila<99){ //es 99
-        //inicio el bitmap aux de vuelta en cada fila nueva
+    while(fila<99){
         int k=0;
-        for(int i = fila-1; i<=fila+1; i++ ){//FUNCIONA ASHEI
+        for(int i = fila-1; i<=fila+1; i++ ){ //pasamos a un bitmap para poder comparar
             bitset<3> baux;
             int p=2; //limite inverso del bitset
-            for (int j = 0; j < 3; j++) { //ver diagrama de matriz en excel
+            for (int j = 0; j < 3; j++) {
                 int s = campo[j][i];
-                if(s==2)
+                if(s==2) //si hay una barrera en esa posicion colocamos un 0 asi no molesta
                     s = 0;
                 if(s==1)
                     baux.set(p);
@@ -71,26 +78,25 @@ void Filter::filtrado(int **campo){
             k++;
         }
 
-        while (columna<99){ // es 99
+        while (columna<99){
             if(comparar(aux)){
-                //creo un vertice con las coordenadas de campo en donde aux se está fijando
                 Vertice nodo = Vertice(fila,columna);
                 //lo meto en el vector de vertices
                 vertices.push_back(nodo);
-                //paso a 0 esa parte de campo, solamente si coincide que son todos 1
+                //paso a 0 esa parte de campo, solamente si fue filtrada
                 for (int i = fila-1; i <= fila + 1; i++) {  //empiezo desde la fila anterior y paro en la siguiente
                     for (int j = columna-1; j <= columna +1 ; j++) { //empiezo desde la fila anterior y paro en la siguiente
                         campo[j][i]=0;
                     }
                 }
                 for (int i = 0; i < aux.M->size(); ++i) {
-                    aux.M[i].flip();
+                    aux.M[i].flip(); //colocamos la matriz en 0 ya que fue filtrada
                 }
                 cout<<"Encontramos una mancha en ("<<fila<<","<<columna<<") Cambiamos a 0 el 3x3 en el campo y en el aux\n";
             }
             aux=aux<<1; //corremos 1 pos a la izq dejando la 3ra columna en 0
             int f=0;
-            if((columna+2)<=99){ //es 99
+            if((columna+2)<=99){ // colocamos la proxima columna a observar en la matriz aux para filtrar
                 for(int k=fila-1;k<=fila+1;k++) {
                     int s = campo[columna+2][k];
                     if(s==2)
@@ -105,10 +111,15 @@ void Filter::filtrado(int **campo){
         columna = 1; //resetea de vuelta a columna 1 para ubicar correctamente el aux en 3*3
         fila++;
     }
-    cout<<"\nMatriz luego de filtrado de manchas"<<endl;
-    printMatriz(campo);
+//    cout<<"\nMatriz luego de filtrado de manchas"<<endl;
+//    printMatriz(campo);
 }
 
+
+/*
+ * Metodo que filtra las barreas
+ * @param campo: matriz del campo
+ */
 void Filter::filtrado_x(int **campo) {//barrido de la matriz para ver las x. Es una verguenza
 
     for (int i = 0; i < 100; ++i) { //es 100
@@ -155,7 +166,7 @@ void Filter::filtrado_x(int **campo) {//barrido de la matriz para ver las x. Es 
                     }
 
                 }
-                if(b.size()>=4) {
+                if(b.size()>=4) { // si la barrera es de 4 o mas es tomada en cuentap
                     Vertice inicio = b.front();
                     Vertice final = b.back();
                     Arista barrera = Arista(inicio, final);
@@ -165,11 +176,16 @@ void Filter::filtrado_x(int **campo) {//barrido de la matriz para ver las x. Es 
 
         }
     }
-    cout<<"\nMatriz luego de filtrado de barreras"<<endl;
-    printMatriz(campo);
+//    cout<<"\nMatriz luego de filtrado de barreras"<<endl;
+//    printMatriz(campo);
 
 }
 
+
+/*
+ * Metodo que imprime la matriz
+ * @param campo: matriz del campo
+ */
 void Filter::printMatriz(int **campo) {
     for(int i=0;i<100;i++){
         cout<<endl;

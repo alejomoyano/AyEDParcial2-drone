@@ -55,8 +55,11 @@ void Grafo::grafos(vector<Vertice>* a, vector<Arista>*b) {
     }
 }
 
+/*
+ * Metodo de setea la matriz de adyacencia
+ */
 void Grafo::set_grafo() {
-    int size= vertices.size();
+    int size = vertices.size();
     int bar = barreras.size();
     //doble for porque tengo que comparar todos con todos
     for (int i = 0; i < size; ++i) {
@@ -70,7 +73,7 @@ void Grafo::set_grafo() {
                     Arista posible = Arista(vertices.at(i),vertices.at(j)); //considero la posible arista
                     int flag = 0; //me avisa si se cruzó con alguna de las barreras
                     for (int k = 0; k < bar; ++k) { //recorro barreras
-                        if (posible.intersecta(barreras.at(k))){
+                        if (posible.intersecta(barreras.at(k))){ //verificamos si alguna barrera se cruza entre los dos vertices
                             flag=1;
                         }
                     }
@@ -100,12 +103,17 @@ void Grafo::set_grafo() {
     }
     cout<<"------------------------------------------------------------------------------------------------"<<endl;
 }
+
 struct camino{
     vector<int> c; //contiene los indices de los verices recorridos
     vector<bool> recorridos; //true si ya vio ese verice
     double peso; //peso del camino
 };
 
+
+/*
+ * Metodo que realiza la busqueda de el camino mas corto
+ */
 void Grafo::busqueda() {
 
 
@@ -125,21 +133,21 @@ void Grafo::busqueda() {
     aux.encolar(inicio);
     int f=0;
 
-    while (!(aux.esVacia())){
+    while (!(aux.esVacia())){ //continua hasta que la cola quede vacia
 
         camino i_camino = aux.desencolar();
-        f=i_camino.c[i_camino.c.size()-1];
-        for (int g = 1; g < vertices.size(); g++) {
-            if (grafo[f][g]!=0 && grafo[f][g]!=INFI && i_camino.recorridos[g]!=1) {
-                camino caux = i_camino;
+        f=i_camino.c[i_camino.c.size()-1]; // setea el ultimo valor agregado al vector de camino
+        for (int g = 1; g < vertices.size(); g++) { //el 1 es porque el 0 esta tomado
+            if (grafo[f][g]!=0 && grafo[f][g]!=INFI && i_camino.recorridos[g]!=1) { //si tiene un vecino entra
+                camino caux = i_camino; //nuevo camino al cual le vamos a agregar el vecino encontrado
                 caux.c.push_back(g);
                 caux.recorridos[g]=true;
                 caux.peso += grafo[f][g];
 
-                if(caux.c.size()==vertices.size()){
-                    if(grafo[g][0]!=0 && grafo[g][0]!=INFI){
+                if(caux.c.size()==vertices.size()){ //si el vector tiene tamanio v (vertices totales) entonces completo un camino
+                    if(grafo[g][0]!=0 && grafo[g][0]!=INFI){// revisamos que el ultimo vertice pueda conectarce con el del inicio
                         counter++;
-                        if(ideal.peso>caux.peso)
+                        if(ideal.peso>caux.peso) //filtramos para ver que el camino sea el mas chico
                             ideal=caux;
                     }
                 }
@@ -149,7 +157,7 @@ void Grafo::busqueda() {
             }
         }
     }
-    printf("El ciclo Hamiltoniano mas corto detectado tiene un peso de: %f.\n Cantidad de caminos encontrados: %i",ideal.peso,counter);
+    printf("El ciclo Hamiltoniano mas corto detectado tiene un peso de: %f.\nCantidad de caminos encontrados: %i",ideal.peso,counter);
 }
 
 #endif //PARCIAL_3_GRAFO_H

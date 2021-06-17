@@ -42,15 +42,15 @@ int main() {
 
     myFile.close();
 
-    filtro.filtrado(pic);
-    filtro.filtrado_x(pic);
+    filtro.filtrado(pic); // realizamos el filtrado de malesas
+    filtro.filtrado_x(pic); //realizamos el filtrado de barreras
     vector<Vertice>* vertices = &filtro.vertices;
     vector<Arista>* barreras = &filtro.barreras;
 
     campo.grafos(vertices, barreras);
-    campo.set_grafo();
+    campo.set_grafo(); //seteamos el grafo y la matriz de adyacencia
 
-    campo.busqueda();
+    campo.busqueda(); // realizamos la busqueda de el camino con menos peso
 
 
     return 0;
