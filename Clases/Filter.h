@@ -30,7 +30,7 @@ Filter::Filter(){
     for (int i = 0; i < filtro.M->size(); ++i) {
         filtro.M[i].flip();
     }
-    //filtro.print(); era para ver si
+
 
 }
 
@@ -111,8 +111,7 @@ void Filter::filtrado(int **campo){
         columna = 1; //resetea de vuelta a columna 1 para ubicar correctamente el aux en 3*3
         fila++;
     }
-//    cout<<"\nMatriz luego de filtrado de manchas"<<endl;
-//    printMatriz(campo);
+
 }
 
 
@@ -176,8 +175,6 @@ void Filter::filtrado_x(int **campo) {//barrido de la matriz para ver las x. Es 
 
         }
     }
-//    cout<<"\nMatriz luego de filtrado de barreras"<<endl;
-//    printMatriz(campo);
 
 }
 

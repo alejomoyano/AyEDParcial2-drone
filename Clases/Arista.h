@@ -28,6 +28,7 @@ public:
     void set_final(Vertice aux);
     void set_dist(float aux);
 
+    //Métodos para confirmar la intersección entre dos segmentos
     bool intersecta(Arista aux);
     bool mismo_segmento(Vertice p, Vertice q, Vertice r);
     int orientacion(Vertice p, Vertice q, Vertice r);
@@ -100,7 +101,7 @@ int Arista::orientacion(Vertice p, Vertice q, Vertice r) {
 
     if (val == 0) return 0;  // colinear
 
-    if(val > 0) return 1;// clock or counterclock wise
+    if(val > 0) return 1;// horario o antihorario
     else return 2;
 }
 

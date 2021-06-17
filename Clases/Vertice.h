@@ -69,7 +69,7 @@ float Vertice::calc_dist(Vertice aux) {
 
     float distancia = roundf(sqrt(abs(pow(x2-x1,2) + pow(y2-y1,2)))*100)/100;
 
-    return distancia; //supuestamente no se permitian decimales, los pesos tenian que ser enteros
+    return distancia;
 }
 
 void Vertice::set_xy(int x, int y) {

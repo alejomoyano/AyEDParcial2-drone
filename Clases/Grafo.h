@@ -127,7 +127,7 @@ void Grafo::busqueda() {
     for (int i = 0; i < vertices.size(); ++i) {//inicializamos el vector en 0
         inicio.recorridos.push_back(false);
     }
-
+    //todos los caminos van a partir desde la posición (1,1) por consigna
     inicio.c.push_back(0);
     inicio.recorridos[0]=true;
     aux.encolar(inicio);

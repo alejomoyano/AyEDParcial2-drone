@@ -47,7 +47,7 @@ int main() {
     vector<Vertice>* vertices = &filtro.vertices;
     vector<Arista>* barreras = &filtro.barreras;
 
-    campo.grafos(vertices, barreras);
+    campo.grafos(vertices, barreras); //inicializa el grafo y los parámetros de la clase
     campo.set_grafo(); //seteamos el grafo y la matriz de adyacencia
 
     campo.busqueda(); // realizamos la busqueda de el camino con menos peso
